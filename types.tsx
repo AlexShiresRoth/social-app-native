@@ -4,14 +4,32 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Welcome: undefined;
+  Login: undefined;
+  Signup: undefined;
 };
 
 export type TabOneParamList = {
-  TabOneScreen: undefined;
+  Login: undefined;
 };
 
 export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+  Signup: undefined;
+};
+
+export type InputParamList = {
+  style: object;
+  placeHolderText: string;
+  containerStyle: object;
+  callback: any;
+  value: any;
+  isSecure: boolean;
+  hasLabel: boolean;
+  label: string;
+};
+
+export type PrimaryButtonParams = {
+  style: object;
+  title: string;
+  callback: any;
 };
