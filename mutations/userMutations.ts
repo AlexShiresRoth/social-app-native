@@ -13,3 +13,17 @@ export const LOGIN_USER = gql`
 		}
 	}
 `;
+
+export const CREATE_ACCOUNT = gql`
+	mutation createUser($email: String, $handle: String, $password: String, $passwordTwo: String, $avatar: String) {
+		createUser(email: $email, handle: $handle, password: $password, passwordTwo: $passwordTwo, avatar: $avatar) {
+			message
+			success
+			user {
+				email
+				avatar
+			}
+			token
+		}
+	}
+`;

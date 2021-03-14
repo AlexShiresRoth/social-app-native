@@ -1,53 +1,43 @@
-import { Ionicons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-import * as React from "react";
+import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import * as React from 'react';
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import TabOneScreen from '../screens/TabOneScreen';
+import TabTwoScreen from '../screens/TabTwoScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+	const colorScheme = useColorScheme();
 
-  return (
-    <BottomTab.Navigator
-      initialRouteName="Welcome"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
-    >
-      <BottomTab.Screen
-        name="Login"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="Signup"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
-          ),
-        }}
-      />
-    </BottomTab.Navigator>
-  );
+	return (
+		<BottomTab.Navigator initialRouteName="Welcome" tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+			<BottomTab.Screen
+				name="Login"
+				component={TabOneNavigator}
+				options={{
+					tabBarIcon: ({ color }) => <TabBarIcon name="log-in" color={color} />,
+				}}
+			/>
+			<BottomTab.Screen
+				name="Signup"
+				component={TabTwoNavigator}
+				options={{
+					tabBarIcon: ({ color }) => <TabBarIcon name="person-add" color={color} />,
+				}}
+			/>
+		</BottomTab.Navigator>
+	);
 }
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof Ionicons>["name"];
-  color: string;
-}) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
+	return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -55,27 +45,19 @@ function TabBarIcon(props: {
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="Login"
-        component={TabOneScreen}
-        options={{ headerTitle: "Login" }}
-      />
-    </TabOneStack.Navigator>
-  );
+	return (
+		<TabOneStack.Navigator>
+			<TabOneStack.Screen name="Login" component={TabOneScreen} options={{ headerTitle: 'Login' }} />
+		</TabOneStack.Navigator>
+	);
 }
 
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="Signup"
-        component={TabTwoScreen}
-        options={{ headerTitle: "Signup" }}
-      />
-    </TabTwoStack.Navigator>
-  );
+	return (
+		<TabTwoStack.Navigator>
+			<TabTwoStack.Screen name="Signup" component={TabTwoScreen} options={{ headerTitle: 'Signup' }} />
+		</TabTwoStack.Navigator>
+	);
 }

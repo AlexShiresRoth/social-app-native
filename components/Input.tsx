@@ -11,16 +11,23 @@ const Input = ({
 	isSecure,
 	hasLabel,
 	label,
+	labelStyle,
+	placeHolderColor,
 }: InputParamList) => {
 	return (
 		<View style={containerStyle}>
-			{hasLabel && <Text>{label}</Text>}
+			{hasLabel && (
+				<View style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+					<Text style={labelStyle}>{label}</Text>
+				</View>
+			)}
 			<TextInput
 				style={style}
 				placeholder={placeHolderText}
 				value={value}
 				onChangeText={(text) => callback(text)}
 				secureTextEntry={isSecure}
+				placeholderTextColor={placeHolderColor}
 			/>
 		</View>
 	);

@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect, RootStateOrAny } from 'react-redux';
@@ -10,21 +11,18 @@ import { LOGIN_USER } from '../mutations/userMutations';
 import { loginUser } from '../redux-store/actions/users';
 
 const TabOneScreen = function () {
+	const { colors } = useTheme();
+
 	const [login, { error, loading, data }] = useMutation(LOGIN_USER);
 
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
 	const handleLogin = () => {
-		const body = {
-			email,
-			password,
-		};
-
 		login({ variables: { email, password } });
 	};
 
-	console.log(error?.message, loading, data);
+	console.log('data!', error?.message, loading, data, colors);
 
 	return (
 		<View style={styles.container}>
@@ -42,6 +40,8 @@ const TabOneScreen = function () {
 						value={email}
 						hasLabel={true}
 						label={'Email'}
+						labelStyle={styles.label}
+						placeHolderColor={'#666'}
 					/>
 					<Input
 						style={styles.input}
@@ -52,8 +52,19 @@ const TabOneScreen = function () {
 						value={password}
 						label={'Password'}
 						hasLabel={true}
+						labelStyle={styles.label}
+						placeHolderColor={'#666'}
 					/>
-					<PrimaryButton title={'Login'} callback={handleLogin} style={styles.button} />
+					{!loading ? (
+						<PrimaryButton
+							title={'Login'}
+							callback={handleLogin}
+							style={styles.button}
+							textStyle={styles.button_text}
+						/>
+					) : (
+						<Text>Loading...</Text>
+					)}
 				</View>
 			</View>
 		</View>
@@ -72,9 +83,21 @@ const styles = StyleSheet.create({
 	inputs_container: {
 		display: 'flex',
 	},
-	input: {},
-	column: {},
+	input: {
+		padding: 5,
+		color: '#F8F1FF',
+	},
+	column: {
+		marginTop: 25,
+		marginBottom: 0,
+		padding: 5,
+		borderRadius: 5,
+		borderColor: '#1B998B',
+		borderWidth: 2,
+		backgroundColor: '#fff',
+	},
 	title: {
+		marginTop: 20,
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
@@ -83,7 +106,27 @@ const styles = StyleSheet.create({
 		height: 1,
 		width: '80%',
 	},
-	button: {},
+	label: {
+		color: '#1A1423',
+		marginTop: -17,
+		marginLeft: 5,
+		backgroundColor: '#fff',
+		fontWeight: '700',
+	},
+	button: {
+		backgroundColor: '#3D314A',
+		marginTop: 20,
+		padding: 15,
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 5,
+		elevation: 20,
+	},
+	button_text: {
+		fontWeight: '700',
+		color: '#fff',
+	},
 });
 
 const mapStateToProps = (state: RootStateOrAny) => ({
