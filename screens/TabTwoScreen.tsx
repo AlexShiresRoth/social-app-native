@@ -1,12 +1,50 @@
 import { useMutation } from '@apollo/client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Input from '../components/Input';
 import PrimaryButton from '../components/PrimaryButton';
 import { Text, View } from '../components/Themed';
 import { CREATE_ACCOUNT } from '../mutations/userMutations';
+import styled from 'styled-components/native';
+import LoadingSpinner from '../components/loading/LoadingSpinner';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import Alert from '../components/alerts/Alert';
 
+const Container = styled.View`
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+`;
+
+const Inner = styled.View`
+	width: 90%;
+`;
+
+const InputContainer = styled.View`
+	display: flex;
+	margin-top: 10px;
+`;
+
+const LoadingContainer = styled.View`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+`;
+const Title = styled.Text`
+	margin-top: 20px;
+	font-size: 20px;
+	font-weight: 700;
+`;
+
+const labelStyle = {
+	marginTop: -17,
+	marginLeft: 5,
+	fontWeight: '700',
+};
 export default function TabTwoScreen() {
+	const theme = useColorScheme();
 	const [email, setEmail] = useState('');
 	const [handle, setHandle] = useState('');
 	const [password, setPassword] = useState('');
@@ -16,63 +54,89 @@ export default function TabTwoScreen() {
 	const handleSignup = () => signup({ variables: { email, handle, password, passwordTwo } });
 
 	console.log(error, loading, data);
+	const [alert, setAlertStatus] = useState({
+		status: '',
+		message: '',
+		isVisible: false,
+	});
+
+	const { isVisible, status, message } = alert;
+
+	useEffect(() => {
+		if (error) {
+			setAlertStatus({
+				status: 'danger',
+				message: error.message,
+				isVisible: true,
+			});
+		}
+		if (data && !data.createUser.success) {
+			console.log('wtf is this data', data.createUser.message);
+			setAlertStatus({
+				status: 'danger',
+				message: data.createUser.message,
+				isVisible: true,
+			});
+		}
+	}, [error, data]);
+
 	return (
-		<View style={styles.container}>
-			<View style={styles.inner}>
-				<Text>Welcome to Parade</Text>
-				<Text>the social app that doesn't track you</Text>
-				<Text style={styles.title}>Signup</Text>
-				<View style={styles.inputs_container}>
+		<Container>
+			<Inner>
+				<Text style={styles.heading}>Welcome to Parade</Text>
+				<Text style={styles.sub_heading}>A minimalistic social media platform</Text>
+
+				<InputContainer>
+					<Title style={{ color: Colors[theme].text }}>Signup</Title>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'Add your email'}
 						isSecure={false}
 						callback={setEmail}
 						value={email}
 						hasLabel={true}
 						label={'Email'}
-						labelStyle={styles.label}
-						placeHolderColor={'#666'}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
+						placeHolderColor={Colors[theme].text}
 					/>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'Create a handle'}
 						isSecure={false}
 						callback={setHandle}
 						value={handle}
 						label={'Handle'}
 						hasLabel={true}
-						labelStyle={styles.label}
-						placeHolderColor={'#666'}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
+						placeHolderColor={Colors[theme].text}
 					/>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'Create a password'}
 						isSecure={true}
 						callback={setPassword}
 						value={password}
 						label={'Password'}
 						hasLabel={true}
-						labelStyle={styles.label}
-						placeHolderColor={'#666'}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
+						placeHolderColor={Colors[theme].text}
 					/>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'Confirm Password'}
 						isSecure={true}
 						callback={setPasswordTwo}
 						value={passwordTwo}
-						label={'Confirm Password'}
+						label={'Confirm'}
 						hasLabel={true}
-						labelStyle={styles.label}
-						placeHolderColor={'#666'}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
+						placeHolderColor={Colors[theme].text}
 					/>
-					{error && <Text>{error.message}</Text>}
-					{data && !data.success && <Text>{data.message}</Text>}
+					{isVisible && <Alert status={status} message={message} />}
 					{!loading ? (
 						<PrimaryButton
 							title={'Signup'}
@@ -81,44 +145,34 @@ export default function TabTwoScreen() {
 							textStyle={styles.button_text}
 						/>
 					) : (
-						<Text>Loading...</Text>
+						<LoadingContainer>
+							<LoadingSpinner />
+							<Text>Loading...</Text>
+						</LoadingContainer>
 					)}
-				</View>
-			</View>
-		</View>
+				</InputContainer>
+			</Inner>
+		</Container>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	inner: {
-		width: '90%',
-	},
-	inputs_container: {
-		display: 'flex',
-	},
-	input: {
-		padding: 5,
-		color: '#666',
-	},
 	column: {
-		marginTop: 25,
-		marginBottom: 0,
+		marginTop: 15,
+		marginBottom: 15,
 		padding: 5,
 		borderRadius: 5,
-		borderColor: '#1B998B',
-		borderWidth: 2,
-		backgroundColor: '#fff',
+		borderWidth: 0,
 	},
 	title: {
 		marginTop: 20,
-		fontSize: 20,
-		fontWeight: 'bold',
 	},
+	heading: {
+		fontSize: 30,
+		fontWeight: '700',
+		fontFamily: 'Raleway',
+	},
+	sub_heading: {},
 	separator: {
 		marginVertical: 30,
 		height: 1,

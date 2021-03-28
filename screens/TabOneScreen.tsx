@@ -1,60 +1,131 @@
 import { useMutation } from '@apollo/client';
-import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { connect, RootStateOrAny } from 'react-redux';
 import Input from '../components/Input';
+import LoadingSpinner from '../components/loading/LoadingSpinner';
 import PrimaryButton from '../components/PrimaryButton';
-
 import { Text, View } from '../components/Themed';
 import { LOGIN_USER } from '../mutations/userMutations';
 import { loginUser } from '../redux-store/actions/users';
+import styled from 'styled-components/native';
 
-const TabOneScreen = function () {
-	const { colors } = useTheme();
+import useColorScheme from '../hooks/useColorScheme';
+import Colors from '../constants/Colors';
+import Alert from '../components/alerts/Alert';
+
+const Container = styled.View`
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+`;
+
+const Inner = styled.View`
+	width: 90%;
+`;
+
+const InputContainer = styled.View`
+	display: flex;
+	margin-top: 10px;
+`;
+
+const LoadingContainer = styled.View`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+`;
+
+const Title = styled.Text`
+	margin-top: 20px;
+	font-size: 20px;
+	font-weight: 700;
+`;
+
+const labelStyle = {
+	marginTop: -17,
+	marginLeft: 5,
+	fontWeight: '700',
+};
+
+const TabOneScreen = function ({ users, loginUser }: any) {
+	const theme = useColorScheme();
 
 	const [login, { error, loading, data }] = useMutation(LOGIN_USER);
 
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
+	const [alert, setAlertStatus] = useState({
+		status: '',
+		message: '',
+		isVisible: false,
+	});
+
+	const { isVisible, status, message } = alert;
+
+	useEffect(() => {
+		if (error) {
+			setAlertStatus({
+				status: 'danger',
+				message: error.message,
+				isVisible: true,
+			});
+		}
+		if (data && !data.loginUser.success) {
+			console.log('wtf is this data', data.loginUser.message);
+			setAlertStatus({
+				status: 'danger',
+				message: data.loginUser.message,
+				isVisible: true,
+			});
+		}
+	}, [error, data]);
+
 	const handleLogin = () => {
 		login({ variables: { email, password } });
 	};
 
-	console.log('data!', error?.message, loading, data, colors);
+	useEffect(() => {
+		if (data && data.loginUser.success) {
+			loginUser(data.loginUser);
+		}
+	}, [data]);
 
+	console.log('user', users);
 	return (
-		<View style={styles.container}>
-			<View style={styles.inner}>
-				<Text>Welcome to Parade</Text>
-				<Text>the social app that doesn't track you</Text>
-				<Text style={styles.title}>Login</Text>
-				<View style={styles.inputs_container}>
+		<Container>
+			<Inner>
+				<Text style={{ color: Colors[theme].text, fontSize: 30, fontWeight: '700' }}>Welcome to Parade</Text>
+				<Text>A minimalistic social media platform</Text>
+
+				<InputContainer>
+					<Title style={{ color: Colors[theme].text }}>Login</Title>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'enter your email'}
 						isSecure={false}
 						callback={setEmail}
 						value={email}
 						hasLabel={true}
 						label={'Email'}
-						labelStyle={styles.label}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
 						placeHolderColor={'#666'}
 					/>
 					<Input
-						style={styles.input}
-						containerStyle={styles.column}
+						style={{ padding: 5, color: Colors[theme].text }}
+						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
 						placeHolderText={'enter your password'}
 						isSecure={true}
 						callback={setPassword}
 						value={password}
 						label={'Password'}
 						hasLabel={true}
-						labelStyle={styles.label}
+						labelStyle={[labelStyle, { color: Colors[theme].text }]}
 						placeHolderColor={'#666'}
 					/>
+					{isVisible && <Alert status={status} message={message} />}
 					{!loading ? (
 						<PrimaryButton
 							title={'Login'}
@@ -63,56 +134,35 @@ const TabOneScreen = function () {
 							textStyle={styles.button_text}
 						/>
 					) : (
-						<Text>Loading...</Text>
+						<LoadingContainer>
+							<LoadingSpinner />
+							<Text>Loading...</Text>
+						</LoadingContainer>
 					)}
-				</View>
-			</View>
-		</View>
+				</InputContainer>
+			</Inner>
+		</Container>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	inner: {
-		width: '90%',
-	},
-	inputs_container: {
-		display: 'flex',
-	},
 	input: {
 		padding: 5,
-		color: '#F8F1FF',
 	},
 	column: {
-		marginTop: 25,
-		marginBottom: 0,
+		marginTop: 20,
+		marginBottom: 20,
 		padding: 5,
 		borderRadius: 5,
-		borderColor: '#1B998B',
-		borderWidth: 2,
-		backgroundColor: '#fff',
+		borderWidth: 0,
 	},
-	title: {
-		marginTop: 20,
-		fontSize: 20,
-		fontWeight: 'bold',
-	},
+
 	separator: {
 		marginVertical: 30,
 		height: 1,
 		width: '80%',
 	},
-	label: {
-		color: '#1A1423',
-		marginTop: -17,
-		marginLeft: 5,
-		backgroundColor: '#fff',
-		fontWeight: '700',
-	},
+
 	button: {
 		backgroundColor: '#3D314A',
 		marginTop: 20,

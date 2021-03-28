@@ -1,6 +1,6 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
@@ -40,6 +40,7 @@ export default function App() {
 	const colorScheme = useColorScheme();
 	const [loaded] = useFonts({
 		Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
+		Raleway: require('./assets/fonts/Raleway-Regular.ttf'),
 	});
 
 	if (!isLoadingComplete && !loaded) {

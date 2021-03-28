@@ -7,6 +7,13 @@ export type BottomTabParamList = {
 	Welcome: undefined;
 	Login: undefined;
 	Signup: undefined;
+	Home: undefined;
+	Profile: undefined;
+};
+
+export type AuthTabParamList = {
+	Home: undefined;
+	Profile: undefined;
 };
 
 export type TabOneParamList = {
@@ -35,4 +42,9 @@ export type PrimaryButtonParams = {
 	title: string;
 	textStyle: object;
 	callback: any;
+};
+
+export type AlertParams = {
+	status: string;
+	message: string;
 };
