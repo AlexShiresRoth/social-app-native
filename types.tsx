@@ -48,3 +48,7 @@ export type AlertParams = {
 	status: string;
 	message: string;
 };
+
+export type TopStackParamList = {
+	users: any;
+};

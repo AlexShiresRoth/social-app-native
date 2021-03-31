@@ -61,6 +61,19 @@ export default function TabTwoScreen() {
 	});
 
 	const { isVisible, status, message } = alert;
+	//remove the alert after time
+	useEffect(() => {
+		if (isVisible) {
+			setTimeout(() => {
+				console.log('is visible baby?', isVisible);
+				setAlertStatus({
+					status: '',
+					message: '',
+					isVisible: false,
+				});
+			}, 3000);
+		}
+	}, [alert]);
 
 	useEffect(() => {
 		if (error) {
@@ -85,9 +98,8 @@ export default function TabTwoScreen() {
 			<Inner>
 				<Text style={styles.heading}>Welcome to Parade</Text>
 				<Text style={styles.sub_heading}>A minimalistic social media platform</Text>
-
+				<Title style={{ color: Colors[theme].text }}>Signup</Title>
 				<InputContainer>
-					<Title style={{ color: Colors[theme].text }}>Signup</Title>
 					<Input
 						style={{ padding: 5, color: Colors[theme].text }}
 						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}
@@ -98,7 +110,7 @@ export default function TabTwoScreen() {
 						hasLabel={true}
 						label={'Email'}
 						labelStyle={[labelStyle, { color: Colors[theme].text }]}
-						placeHolderColor={Colors[theme].text}
+						placeHolderColor={'#666'}
 					/>
 					<Input
 						style={{ padding: 5, color: Colors[theme].text }}
@@ -110,7 +122,7 @@ export default function TabTwoScreen() {
 						label={'Handle'}
 						hasLabel={true}
 						labelStyle={[labelStyle, { color: Colors[theme].text }]}
-						placeHolderColor={Colors[theme].text}
+						placeHolderColor={'#666'}
 					/>
 					<Input
 						style={{ padding: 5, color: Colors[theme].text }}
@@ -122,7 +134,7 @@ export default function TabTwoScreen() {
 						label={'Password'}
 						hasLabel={true}
 						labelStyle={[labelStyle, { color: Colors[theme].text }]}
-						placeHolderColor={Colors[theme].text}
+						placeHolderColor={'#666'}
 					/>
 					<Input
 						style={{ padding: 5, color: Colors[theme].text }}
@@ -134,7 +146,7 @@ export default function TabTwoScreen() {
 						label={'Confirm'}
 						hasLabel={true}
 						labelStyle={[labelStyle, { color: Colors[theme].text }]}
-						placeHolderColor={Colors[theme].text}
+						placeHolderColor={'#666'}
 					/>
 					{isVisible && <Alert status={status} message={message} />}
 					{!loading ? (

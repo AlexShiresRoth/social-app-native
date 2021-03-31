@@ -8,6 +8,7 @@ export const LOGIN_USER = gql`
 			user {
 				email
 				avatar
+				handle
 			}
 			token
 		}
@@ -22,6 +23,7 @@ export const CREATE_ACCOUNT = gql`
 			user {
 				email
 				avatar
+				handle
 			}
 			token
 		}

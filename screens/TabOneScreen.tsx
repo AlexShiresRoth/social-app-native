@@ -50,12 +50,9 @@ const labelStyle = {
 
 const TabOneScreen = function ({ users, loginUser }: any) {
 	const theme = useColorScheme();
-
 	const [login, { error, loading, data }] = useMutation(LOGIN_USER);
-
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
-
 	const [alert, setAlertStatus] = useState({
 		status: '',
 		message: '',
@@ -63,6 +60,20 @@ const TabOneScreen = function ({ users, loginUser }: any) {
 	});
 
 	const { isVisible, status, message } = alert;
+
+	//remove the alert after time
+	useEffect(() => {
+		if (isVisible) {
+			setTimeout(() => {
+				console.log('is visible baby?', isVisible);
+				setAlertStatus({
+					status: '',
+					message: '',
+					isVisible: false,
+				});
+			}, 3000);
+		}
+	}, [alert]);
 
 	useEffect(() => {
 		if (error) {
@@ -73,7 +84,7 @@ const TabOneScreen = function ({ users, loginUser }: any) {
 			});
 		}
 		if (data && !data.loginUser.success) {
-			console.log('wtf is this data', data.loginUser.message);
+			// console.log('wtf is this data', data.loginUser.message);
 			setAlertStatus({
 				status: 'danger',
 				message: data.loginUser.message,
@@ -92,15 +103,15 @@ const TabOneScreen = function ({ users, loginUser }: any) {
 		}
 	}, [data]);
 
-	console.log('user', users);
+	// console.log('user', users);
 	return (
 		<Container>
 			<Inner>
 				<Text style={{ color: Colors[theme].text, fontSize: 30, fontWeight: '700' }}>Welcome to Parade</Text>
 				<Text>A minimalistic social media platform</Text>
 
+				<Title style={{ color: Colors[theme].text }}>Login</Title>
 				<InputContainer>
-					<Title style={{ color: Colors[theme].text }}>Login</Title>
 					<Input
 						style={{ padding: 5, color: Colors[theme].text }}
 						containerStyle={[styles.column, { backgroundColor: Colors[theme].inputBackground }]}

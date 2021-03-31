@@ -38,8 +38,16 @@ const BottomTabNavigator = function ({ users: { isUserAuthenticated } }: any) {
 				</>
 			) : (
 				<>
-					<BottomTab.Screen name="Home" component={HomeScreen} />
-					<BottomTab.Screen name="Profile" component={ProfileScreen} />
+					<BottomTab.Screen
+						name="Home"
+						component={HomeScreen}
+						options={{ tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} /> }}
+					/>
+					<BottomTab.Screen
+						name="Profile"
+						component={ProfileScreen}
+						options={{ tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} /> }}
+					/>
 				</>
 			)}
 		</BottomTab.Navigator>
