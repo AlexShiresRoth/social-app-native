@@ -52,3 +52,7 @@ export type AlertParams = {
 export type TopStackParamList = {
 	users: any;
 };
+
+export type PostParamList = {
+	data: any;
+};

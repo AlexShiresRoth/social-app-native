@@ -10,7 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { AuthTabParamList, BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -53,15 +53,6 @@ const BottomTabNavigator = function ({ users: { isUserAuthenticated } }: any) {
 		</BottomTab.Navigator>
 	);
 };
-
-const AuthTabStack = createStackNavigator<AuthTabParamList>();
-
-function AuthNavBar() {
-	const theme = useColorScheme();
-	<AuthTabStack.Navigator>
-		<AuthTabStack.Screen name="Home" component={HomeScreen} options={{ headerTitle: 'Home' }} />
-	</AuthTabStack.Navigator>;
-}
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/

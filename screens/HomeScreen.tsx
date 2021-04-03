@@ -1,12 +1,16 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
+import Posts from '../components/home/Posts';
 import TopStack from '../components/home/TopStack';
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
 
-const Content = styled.ScrollView`
+const Content = styled.View`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 `;
 
 const Inner = styled.View`
@@ -16,11 +20,14 @@ const Inner = styled.View`
 `;
 
 const HomeScreen = () => {
+	const theme = useColorScheme();
+
 	return (
 		<SafeAreaView style={{ flex: 1, paddingTop: StatusBar.currentHeight }}>
-			<Content contentContainerStyle={{ alignItems: 'center' }}>
+			<Content style={{ alignItems: 'center', backgroundColor: Colors[theme].background }}>
+				<TopStack />
 				<Inner>
-					<TopStack />
+					<Posts />
 				</Inner>
 			</Content>
 		</SafeAreaView>

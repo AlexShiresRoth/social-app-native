@@ -12,7 +12,8 @@ const TopStack = ({ users }: TopStackParamList) => {
 		display: flex;
 		width: 100%;
 		justify-content: center;
-		margin-top: 10px;
+		margin-bottom: 5px;
+		background-color: ${Colors[theme].primary};
 	`;
 	const Inner = styled.View`
 		width: 100%;
@@ -21,7 +22,6 @@ const TopStack = ({ users }: TopStackParamList) => {
 		justify-content: space-between;
 		flex-direction: row;
 		padding: 10px;
-		background-color: ${Colors[theme].inputBackground};
 	`;
 	const Avatar = styled.Image`
 		display: flex;
@@ -29,12 +29,12 @@ const TopStack = ({ users }: TopStackParamList) => {
 		height: 30px;
 		border-radius: 500px;
 		border-width: 2px;
-
-		border-color: ${Colors[theme].text};
+		border-color: ${Colors[theme].background};
 	`;
 
-	const EmailText = styled.Text`
-		color: ${Colors[theme].text};
+	const Handle = styled.Text`
+		color: ${Colors[theme].background};
+		font-weight: 700;
 	`;
 
 	console.log('these are user', users);
@@ -42,12 +42,11 @@ const TopStack = ({ users }: TopStackParamList) => {
 		user: { avatar, email, handle },
 	} = users;
 
-	console.log('this is a avatar', avatar);
 	return (
 		<Container>
 			<Inner>
 				<Avatar source={{ uri: avatar }} />
-				<EmailText>{handle}</EmailText>
+				<Handle>{handle} </Handle>
 			</Inner>
 		</Container>
 	);

@@ -94,9 +94,9 @@ export default function TabTwoScreen() {
 	}, [error, data]);
 
 	return (
-		<Container>
+		<Container style={{ backgroundColor: Colors[theme].background }}>
 			<Inner>
-				<Text style={styles.heading}>Welcome to Parade</Text>
+				<Text style={styles.heading}>Welcome to Parallel</Text>
 				<Text style={styles.sub_heading}>A minimalistic social media platform</Text>
 				<Title style={{ color: Colors[theme].text }}>Signup</Title>
 				<InputContainer>

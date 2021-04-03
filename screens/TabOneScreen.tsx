@@ -13,7 +13,6 @@ import styled from 'styled-components/native';
 import useColorScheme from '../hooks/useColorScheme';
 import Colors from '../constants/Colors';
 import Alert from '../components/alerts/Alert';
-
 const Container = styled.View`
 	flex: 1;
 	align-items: center;
@@ -47,9 +46,9 @@ const labelStyle = {
 	marginLeft: 5,
 	fontWeight: '700',
 };
-
 const TabOneScreen = function ({ users, loginUser }: any) {
 	const theme = useColorScheme();
+
 	const [login, { error, loading, data }] = useMutation(LOGIN_USER);
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -105,10 +104,10 @@ const TabOneScreen = function ({ users, loginUser }: any) {
 
 	// console.log('user', users);
 	return (
-		<Container>
+		<Container style={{ backgroundColor: Colors[theme].background }}>
 			<Inner>
-				<Text style={{ color: Colors[theme].text, fontSize: 30, fontWeight: '700' }}>Welcome to Parade</Text>
-				<Text>A minimalistic social media platform</Text>
+				<Text style={{ color: Colors[theme].text, fontSize: 30, fontWeight: '700' }}>Welcome to Parallel</Text>
+				<Text>A minimalistic social media platform?</Text>
 
 				<Title style={{ color: Colors[theme].text }}>Login</Title>
 				<InputContainer>
